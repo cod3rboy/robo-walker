@@ -46,7 +46,7 @@ func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
 				drawColor = opts.PosColor.RGBA()
 			}
 
-			img.Set(x, y, drawColor)
+			img.Set(x, h-y, drawColor)
 		}
 	}
 	return img
