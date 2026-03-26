@@ -43,7 +43,14 @@ func (w *World) moveRobot(cmd MoveCommand) {
 		w.robot.Face = cmd.Direction
 		w.robot.Move()
 		newX, newY := w.robot.Pos.Get()
-		w.robot.Pos.Set(newX%w.grid.W, newY%w.grid.H)
+		newX, newY = newX%w.grid.W, newY%w.grid.H
+		if newX < 0 {
+			newX = w.grid.W - newX
+		}
+		if newY < 0 {
+			newY = w.grid.H - newY
+		}
+		w.robot.Pos.Set(newX, newY)
 		w.save()
 	}
 }
