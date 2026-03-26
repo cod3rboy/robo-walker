@@ -1,12 +1,25 @@
 package robo
 
-type Snapshot [][]bool
+type OType int8
+
+const (
+	OGround OType = 0
+	OTrail        = 0b00000001 << iota
+	ORobot
+)
+
+type Snapshot [][]OType
 
 func (s Snapshot) Copy() Snapshot {
 	cpy := make(Snapshot, len(s))
 	for i := range cpy {
-		inner := make([]bool, len(s[i]))
+		inner := make([]OType, len(s[i]))
 		copy(inner, s[i])
+		for j := range inner {
+			if inner[j] == ORobot {
+				inner[j] = OTrail
+			}
+		}
 		cpy[i] = inner
 	}
 	return cpy
@@ -40,13 +53,13 @@ func (w *World) save() {
 	if len(w.snapshots) == 0 {
 		snapshot = make(Snapshot, w.grid.W)
 		for i := range snapshot {
-			snapshot[i] = make([]bool, w.grid.H)
+			snapshot[i] = make([]OType, w.grid.H)
 		}
 	} else {
 		snapshot = w.snapshots[len(w.snapshots)-1].Copy()
 	}
 	x, y := w.robot.Pos.Get()
-	snapshot[x][y] = true
+	snapshot[x][y] = ORobot
 	w.snapshots = append(w.snapshots, snapshot)
 }
 

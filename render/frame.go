@@ -35,26 +35,19 @@ func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
 
 	img := image.NewRGBA(image.Rectangle{upperLeft, lowerRight})
 
-	lastFgPoint := image.Point{0, 0}
 	for x := range s {
 		for y := range s[x] {
-			isBg := !s[x][y]
+			otype := s[x][y]
 			drawColor := opts.BgColor.RGBA()
-			if !isBg {
+			switch otype {
+			case robo.OTrail:
 				drawColor = opts.FgColor.RGBA()
-				lastFgPoint.X = x
-				lastFgPoint.Y = y
+			case robo.ORobot:
+				drawColor = opts.PosColor.RGBA()
 			}
 
 			img.Set(x, y, drawColor)
 		}
 	}
-
-	img.Set(
-		lastFgPoint.X,
-		lastFgPoint.Y,
-		opts.PosColor.RGBA(),
-	)
-
 	return img
 }
