@@ -11,10 +11,10 @@ type Color uint32
 
 func (c Color) RGBA() color.RGBA {
 	return color.RGBA{
-		uint8(0xFF000000 & c),
-		uint8(0x00FF0000 & c),
-		uint8(0x0000FF00 & c),
-		uint8(0x000000FF & c),
+		uint8((0xFF000000 & c) >> 24),
+		uint8((0x00FF0000 & c) >> 16),
+		uint8((0x0000FF00 & c) >> 8),
+		uint8((0x000000FF & c) >> 0),
 	}
 }
 
