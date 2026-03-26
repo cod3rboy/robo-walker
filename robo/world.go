@@ -7,7 +7,7 @@ func (s Snapshot) Copy() Snapshot {
 	for i := range cpy {
 		inner := make([]bool, len(s[i]))
 		copy(inner, s[i])
-		cpy = append(cpy, inner)
+		cpy[i] = inner
 	}
 	return cpy
 }
