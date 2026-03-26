@@ -35,7 +35,7 @@ func (r *gifRenderer) Render(opts DrawOpts) ([]byte, error) {
 	err := gif.EncodeAll(&b, &gif.GIF{
 		Image:     frames,
 		Delay:     delays,
-		LoopCount: 1,
+		LoopCount: -1,
 	})
 
 	if err != nil {
