@@ -27,15 +27,13 @@ type DrawOpts struct {
 }
 
 func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
-	w := len(s)
+	w := len(s) - 1
 	h := 0
 	if len(s) > 0 {
-		h = len(s[0])
+		h = len(s[0]) - 1
 	}
-	upperLeft := image.Point{0, 0}
-	lowerRight := image.Point{w, h}
 
-	img := image.NewRGBA(image.Rectangle{upperLeft, lowerRight})
+	img := image.NewRGBA(image.Rect(0, 0, w, h))
 
 	for x := range s {
 		for y := range s[x] {
@@ -52,13 +50,9 @@ func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
 		}
 	}
 
-	scaledImage := image.NewRGBA(
-		image.Rectangle{
-			image.Point{0, 0},
-			image.Point{int(opts.Size), int(opts.Size)},
-		},
-	)
-	g := gift.New(gift.Resize(int(opts.Size), int(opts.Size), gift.LinearResampling))
+	scaledImage := image.NewRGBA(image.Rect(0, 0, int(opts.Size), int(opts.Size)))
+
+	g := gift.New(gift.Resize(int(opts.Size), int(opts.Size), gift.BoxResampling))
 	g.Draw(scaledImage, img)
 
 	return scaledImage

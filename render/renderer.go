@@ -26,7 +26,7 @@ func (r *gifRenderer) Render(opts DrawOpts) ([]byte, error) {
 	for i := range frames {
 		rgbaFrame := RenderImageFromSnapshot(r.ss[i], opts)
 		paletted := image.NewPaletted(rgbaFrame.Bounds(), palette.Plan9)
-		draw.FloydSteinberg.Draw(paletted, rgbaFrame.Bounds(), rgbaFrame, image.Point{})
+		draw.Draw(paletted, rgbaFrame.Bounds(), rgbaFrame, image.Point{}, draw.Src)
 		frames[i] = paletted
 		delays[i] = r.delay
 	}
