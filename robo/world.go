@@ -14,8 +14,8 @@ func (s Snapshot) Copy() Snapshot {
 	cpy := make(Snapshot, len(s))
 	for i := range cpy {
 		inner := make([]OType, len(s[i]))
-		copy(inner, s[i])
 		for j := range inner {
+			inner[j] = s[i][j]
 			if inner[j] == ORobot {
 				inner[j] = OTrail
 			}
@@ -31,10 +31,10 @@ type World struct {
 	snapshots []Snapshot
 }
 
-func NewWorld(width, height int) *World {
+func NewWorld(size int) *World {
 	return &World{
-		grid:  NewGrid2D(width, height),
-		robot: NewRobot(width/2, height/2, FaceNorth),
+		grid:  NewGrid2D(size, size),
+		robot: NewRobot(size/2, size/2, FaceNorth),
 	}
 }
 
@@ -45,10 +45,10 @@ func (w *World) moveRobot(cmd MoveCommand) {
 		newX, newY := w.robot.Pos.Get()
 		newX, newY = newX%w.grid.W, newY%w.grid.H
 		if newX < 0 {
-			newX = w.grid.W - newX
+			newX = w.grid.W + newX
 		}
 		if newY < 0 {
-			newY = w.grid.H - newY
+			newY = w.grid.H + newY
 		}
 		w.robot.Pos.Set(newX, newY)
 		w.save()

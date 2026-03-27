@@ -5,6 +5,7 @@ import (
 	"image/color"
 
 	"github.com/cod3rboy/robo-walker/robo"
+	"github.com/disintegration/gift"
 )
 
 type Color uint32
@@ -22,6 +23,7 @@ type DrawOpts struct {
 	FgColor  Color
 	BgColor  Color
 	PosColor Color
+	Size     uint
 }
 
 func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
@@ -49,5 +51,15 @@ func RenderImageFromSnapshot(s robo.Snapshot, opts DrawOpts) *image.RGBA {
 			img.Set(x, h-y, drawColor)
 		}
 	}
-	return img
+
+	scaledImage := image.NewRGBA(
+		image.Rectangle{
+			image.Point{0, 0},
+			image.Point{int(opts.Size), int(opts.Size)},
+		},
+	)
+	g := gift.New(gift.Resize(int(opts.Size), int(opts.Size), gift.LinearResampling))
+	g.Draw(scaledImage, img)
+
+	return scaledImage
 }
