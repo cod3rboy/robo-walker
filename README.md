@@ -1,6 +1,6 @@
-![Robot walking grid](./assets/robot.gif)
-
 # Robo Walker
+
+![Robot walking grid](./assets/robot.gif)
 
 Teach a virtual robot how to walk a 2D grid using programmed instructions.
 
